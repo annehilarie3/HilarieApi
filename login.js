@@ -5,19 +5,17 @@ export default class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', fullname: '', age: '', password: '', secureTextEntry: true, };
+    this.state = { email: '', password: '', secureTextEntry: true, };
   }
 
   Register = () => {
     let email = this.state.email;
-    let fullname = this.state.fullname;
-    let age = this.state.age;
     let password = this.state.password;
 
-    if (email.length === 0 || fullname.length === 0 || age.length === 0) {
+    if (email.length === 0 || password.length === 0) {
       alert("Required Field is Missing");
     } else {
-      let InsertAPIURL = "http://192.168.0.68/hilarieapi/api/insert.php";
+      let InsertAPIURL = "http://192.168.0.68/hilarieapi/api/login.php";
 
       let headers = {
         'Accept': 'application/json',
@@ -26,8 +24,6 @@ export default class App extends Component {
 
       let Data = {
         email: email,
-        fullname: fullname,
-        age: age,
         password: password
       };
 
@@ -42,27 +38,19 @@ export default class App extends Component {
       })
       .catch((error) => {
         alert("Error" + error);
-      })
-      this.props.navigation.navigate("login");
+      });
+      this.props.navigation.navigate("weather");
     }
+  }
+
+  register = () => {
+    this.props.navigation.navigate("register");
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Register</Text>
-        <TextInput 
-          placeholder={"Full Name"}
-          placeholderTextColor={"#999"}
-          style={styles.input}
-          onChangeText={fullname => this.setState({ fullname })}
-        />
-        <TextInput 
-          placeholder={"Age"}
-          placeholderTextColor={"#999"}
-          style={styles.input}
-          onChangeText={age => this.setState({ age })}
-        />
+        <Text style={styles.title}>Weather Login</Text>
         <TextInput 
           placeholder={"Email"}
           placeholderTextColor={"#999"}
@@ -77,7 +65,10 @@ export default class App extends Component {
           onChangeText={password => this.setState({ password })}
         />
         <TouchableOpacity style={styles.button} onPress={this.Register}>
-          <Text style={styles.buttonText}>Create Account</Text>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.linkButton} onPress={this.register}>
+          <Text style={styles.linkButtonText}>Register</Text>
         </TouchableOpacity>
       </View>
     );
@@ -121,5 +112,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  linkButton: {
+    marginVertical: 10,
+  },
+  linkButtonText: {
+    color: 'tomato',
+    fontSize: 16,
   },
 });
